@@ -1,9 +1,19 @@
 
 const express = require('express');
-
+const loginrouters = requiere('./login/login.routers');
+const propertis = require('./config/propertis');
+const DB = require ('./config/db');
+//in DB
+DB();
 const app = express();
+const router = express.Router();
+app.user('/api', router);
+loginrouters =require (router);
+router.get('/', ( req, res) => {
+    res.send('hi from home');
+});
 
-app.get('/', (req, res) => {
+app.get('/', ( req, res) => {
 
     res.json({
         ok: true,
