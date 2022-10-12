@@ -1,15 +1,30 @@
+const express = require("express");
+const bodyParser = require("body-parser");
+const user = require("./routes/user");
+const InitiateMongoServer = require("./config/db");
 
-const express = require('express');
+// Initiate Mongo Server
+InitiateMongoServer();
 
 const app = express();
 
-app.get('/', (req, res) => {
+// PORT
+const PORT = process.env.PORT || 4000;
 
-    res.json({
-        ok: true,
-        msg: 'Hola Mundo'
-    })
+// Middleware
+app.use(bodyParser.json());
+
+app.get("/", (req, res) => {
+  res.json({ message: "API Funcionando" });
 });
-app.listen(3000, () => {
-    console.log('El servidor esta corriendo en el puerto: ' + 3000)
+
+/**
+ * Router Middleware
+ * Router - /user/*
+ * Method - *
+ */
+app.use("/user", user);
+
+app.listen(PORT, (req, res) => {
+  console.log(`Servidor iniciado en puerto ${PORT}`);
 });
