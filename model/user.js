@@ -18,6 +18,9 @@ const UserSchema = mongoose.Schema({
   },
   lastname:{
     type: String,
+  },
+  authCode:{
+    type: String,
   }
 });
 
