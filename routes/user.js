@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const auth = require("../middleware/auth");
-
 const User = require("../model/User");
 
 /**
@@ -39,7 +38,7 @@ router.post(
       });
       if (user) {
         return res.status(400).json({
-          msg: "User Already Exists"
+          msg: "El usuario ya existe"
         });
       }
 
@@ -48,10 +47,11 @@ router.post(
         email,
         password,
         name,
-        lastname
+        lastname,
+        newLogin: true
       });
 
-      const salt = await bcrypt.genSalt(10);
+      const salt = await bcrypt.genSalt(8);
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
@@ -71,13 +71,14 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.status(200).json({
-            token
+            // token,
+            message: "Usuario creado"
           });
         }
       );
     } catch (err) {
       console.log(err.message);
-      res.status(500).send("Error in Saving");
+      res.status(500).send("Error en el proceso de guardado");
     }
   }
 );
@@ -85,8 +86,8 @@ router.post(
 router.post(
   "/login",
   [
-    check("rut", "Please enter a valid RUT").isString(),
-    check("password", "Please enter a valid password").isLength({
+    check("rut", "Por favor, ingresa un RUT válido").isString(),
+    check("password", "Por favor, ingresa una contraseña válida").isLength({
       min: 6
     })
   ],
@@ -95,7 +96,7 @@ router.post(
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
-        errors: errors.array()
+        errors: errors.message
       });
     }
 
@@ -106,13 +107,20 @@ router.post(
       });
       if (!user)
         return res.status(400).json({
-          message: "User Not Exist"
+          message: "Usuario no existe"
         });
+
+      if (user.newLogin = true) {
+        return res.status(201).json({
+          isNewUser: 'true',
+          message: "204: Cambio de contraseña"
+        })
+      }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.status(400).json({
-          message: "Incorrect Password !"
+          message: "Contraseña incorrecta!"
         });
 
       const payload = {
@@ -120,7 +128,6 @@ router.post(
           id: user.id
         }
       };
-
       jwt.sign(
         payload,
         "randomString",
@@ -130,18 +137,68 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.status(200).json({
-            token
+            message: "200: Logueado correctamente"
           });
         }
       );
     } catch (e) {
       console.error(e);
       res.status(500).json({
-        message: "Server Error"
+        message: "Error de Servidor"
       });
     }
   }
 );
+
+router.post(
+  "/changePassNewUser",
+  [
+    check("rut", "Por favor, ingresa un RUT válido").isString(),  
+    check("password", "Por favor, ingresa una contraseña válida").isLength({
+    min: 6
+  })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.message
+      });
+    }
+
+    const { rut, password } = req.body;
+    try {
+      
+      let user = await User.findByIdAndUpdate({
+        rut,
+      });
+      console.log(user)
+      if (newLogin = true) {
+        var newvalues = { $set: { newLogin: false } }
+
+        user.save(newvalues, password, function (err) {
+          if (err) throw err;
+          res.status(200).json({
+            message: "201: Contraseña Cambiada"
+          });
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({
+        message: "Error de Servidor"
+      });
+    }
+  }
+)
+
+
+
+
+
+
+
 
 /**
  * @method - POST

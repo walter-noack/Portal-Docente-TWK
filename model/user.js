@@ -19,9 +19,10 @@ const UserSchema = mongoose.Schema({
   lastname:{
     type: String,
   },
-  authCode:{
-    type: String,
+  newLogin:{
+    type: Boolean,
   }
+
 });
 
 // export model user with UserSchema
