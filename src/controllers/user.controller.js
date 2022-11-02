@@ -1,4 +1,4 @@
-const User = require('../models/user.model');
+const UserMail = require('../models/user.model');
 const { v4: uuidv4 } = require('uuid');
 const { getToken, getTokenData } = require('../config/jwt.config');
 const { getTemplate, sendEmail } = require('../config/mail.config');
@@ -12,9 +12,9 @@ const signUp = async (req, res) => {
         const { rut, name, email } = req.body;
 
         // Verificar que el usuario no exista
-        let user = await User.findOne({ email }) || null;
+        let userMail = await UserMail.findOne({ email }) || null;
 
-        if(user !== null) {
+        if(userMail !== null) {
             return res.json({
                 success: false,
                 msg: 'Usuario ya existe'
@@ -25,7 +25,7 @@ const signUp = async (req, res) => {
         const code = uuidv4();
 
         // Crear un nuevo usuario
-        user = new User({ rut, name, email, code });
+        userMail = new UserMail({ rut, name, email, code });
 
         // Generar token
         const token = getToken({ email, code });
@@ -35,7 +35,7 @@ const signUp = async (req, res) => {
 
         // Enviar el email
         await sendEmail(email, 'Este es un email de prueba', template);
-        await user.save();
+        await userMail.save();
 
         res.json({
             success: true,
@@ -72,9 +72,9 @@ const confirm = async (req, res) => {
        const { email, code } = data.data;
 
        // Verificar existencia del usuario
-       const user = await User.findOne({ email }) || null;
+       const userMail = await UserMail.findOne({ email }) || null;
 
-       if(user === null) {
+       if(userMail === null) {
             return res.json({
                 success: false,
                 msg: 'Usuario no existe'
@@ -82,13 +82,13 @@ const confirm = async (req, res) => {
        }
 
        // Verificar el código
-       if(code !== user.code) {
+       if(code !== userMail.code) {
             return res.redirect('/error.html');
        }
 
        // Actualizar usuario
-       user.status = 'VERIFIED';
-       await user.save();
+       userMail.status = 'VERIFIED';
+       await userMail.save();
 
        // Redireccionar a la confirmación
        return res.redirect('/confirm.html');
