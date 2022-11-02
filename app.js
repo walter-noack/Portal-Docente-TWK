@@ -16,9 +16,7 @@ const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 
 
-app.listen(PORT, (req, res) => {
-  console.log(`Servidor iniciado en puerto ${PORT}`);
-});
+
 
 
 app.get("/", (req, res) => {
@@ -33,3 +31,6 @@ app.get("/", (req, res) => {
 app.use("/user", user);
 app.use("/subject", subject);
 
+app.listen(PORT, (req, res) => {
+  console.log(`Servidor iniciado en puerto ${PORT}`);
+});
