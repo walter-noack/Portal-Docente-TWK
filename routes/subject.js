@@ -79,4 +79,62 @@ const Subject =require("../model/subject");
     }
   );
 
+  
+  // router.get(
+  //   "/dashboard",
+  //       [
+  //         check("rut", "Please enter a valid RUT").isString(),
+          
+  //       ],
+
+
+  //       async (req, res) => {
+  //         const errors = validationResult(req);
+      
+  //         if (!errors.isEmpty()) {
+  //           return res.status(400).json({
+  //             errors: errors.array()
+  //           });
+  //         }
+      
+  //         const { teacherCode } = req.body;
+  //         try {
+  //           let user = await Subject.findOne({
+  //             teacherCode
+  //           });
+  //           if (!user)
+  //             return res.status(400).json({
+  //               message: "No hay asignaturas para este RUT"
+  //             });
+              
+  //             const payload = {
+  //               subject: {
+  //                 subjectTeacher: Subject.teacherCode
+  //               }
+  //             };
+  //             jwt.sign(
+  //               payload,
+  //               "randomString",
+  //               {
+  //                 expiresIn: 3600
+  //               },
+  //               (err) => {
+  //                 if (err) throw err;
+  //                 res.status(200).json({
+                    
+  //                 });
+  //               }
+  //             );
+  //           } catch (e) {
+  //             console.error(e);
+  //             res.status(500).json({
+  //               message: "Server Error"
+  //             });
+  //           }
+  //         }
+  //       );
+  
+
+
 module.exports = router;
+
