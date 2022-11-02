@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "express-validator": "^6.14.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.15",
     "nodemailer": "^6.8.0",
