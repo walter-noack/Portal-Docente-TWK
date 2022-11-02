@@ -1,19 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const user = require("./routes/user");
-const InitiateMongoServer = require("./config/db");
+const InitiateMongoServer = require('./src/config/db.config');
 const subject = require("./routes/subject");
 
 const app = express();
 InitiateMongoServer();
 
+
+
+// PORT
 const PORT = process.env.PORT || 4000;
 
-
-app.use(express.static('./public'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
+// Middleware
 app.use(bodyParser.json());
 
 

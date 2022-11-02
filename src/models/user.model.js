@@ -8,4 +8,4 @@ const UserSchema = new mongoose.Schema({
     status: { type: String, required: true, default: 'UNVERIFIED' }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('UserMail', UserSchema);
