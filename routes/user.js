@@ -3,7 +3,7 @@ const { check, validationResult } = require("express-validator/check");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
-const auth = require("../middleware/auth");
+
 const User = require("../model/User");
 
 /**
@@ -38,7 +38,7 @@ router.post(
       });
       if (user) {
         return res.status(400).json({
-          msg: "El usuario ya existe"
+          msg: "User Already Exists"
         });
       }
 
@@ -47,11 +47,10 @@ router.post(
         email,
         password,
         name,
-        lastname,
-        newLogin: true
+        lastname
       });
 
-      const salt = await bcrypt.genSalt(8);
+      const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
@@ -71,14 +70,13 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.status(200).json({
-            // token,
-            message: "Usuario creado"
+            token
           });
         }
       );
     } catch (err) {
       console.log(err.message);
-      res.status(500).send("Error en el proceso de guardado");
+      res.status(500).send("Error in Saving");
     }
   }
 );
@@ -86,8 +84,8 @@ router.post(
 router.post(
   "/login",
   [
-    check("rut", "Por favor, ingresa un RUT válido").isString(),
-    check("password", "Por favor, ingresa una contraseña válida").isLength({
+    check("rut", "Please enter a valid RUT").isString(),
+    check("password", "Please enter a valid password").isLength({
       min: 6
     })
   ],
@@ -96,7 +94,7 @@ router.post(
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
-        errors: errors.message
+        errors: errors.array()
       });
     }
 
@@ -107,20 +105,13 @@ router.post(
       });
       if (!user)
         return res.status(400).json({
-          message: "Usuario no existe"
+          message: "User Not Exist"
         });
-
-      if (user.newLogin = true) {
-        return res.status(201).json({
-          isNewUser: 'true',
-          message: "204: Cambio de contraseña"
-        })
-      }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
         return res.status(400).json({
-          message: "Contraseña incorrecta!"
+          message: "Incorrect Password !"
         });
 
       const payload = {
@@ -128,6 +119,7 @@ router.post(
           id: user.id
         }
       };
+
       jwt.sign(
         payload,
         "randomString",
@@ -137,83 +129,33 @@ router.post(
         (err, token) => {
           if (err) throw err;
           res.status(200).json({
-            message: "200: Logueado correctamente"
+            token
           });
         }
       );
     } catch (e) {
       console.error(e);
       res.status(500).json({
-        message: "Error de Servidor"
+        message: "Server Error"
       });
     }
   }
 );
 
-router.post(
-  "/changePassNewUser",
-  [
-    check("rut", "Por favor, ingresa un RUT válido").isString(),  
-    check("password", "Por favor, ingresa una contraseña válida").isLength({
-    min: 6
-  })
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
+// /**
+//  * @method - POST
+//  * @description - Get LoggedIn User
+//  * @param - /user/me
+//  */
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.message
-      });
-    }
-
-    const { rut, password } = req.body;
-    try {
-      
-      let user = await User.findByIdAndUpdate({
-        rut,
-      });
-      console.log(user)
-      if (newLogin = true) {
-        var newvalues = { $set: { newLogin: false } }
-
-        user.save(newvalues, password, function (err) {
-          if (err) throw err;
-          res.status(200).json({
-            message: "201: Contraseña Cambiada"
-          });
-        });
-      }
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({
-        message: "Error de Servidor"
-      });
-    }
-  }
-)
-
-
-
-
-
-
-
-
-/**
- * @method - POST
- * @description - Get LoggedIn User
- * @param - /user/me
- */
-
-router.get("/me", auth, async (req, res) => {
-  try {
-    // request.user is getting fetched from Middleware after token authentication
-    const user = await User.findById(req.user.id);
-    res.json(user);
-  } catch (e) {
-    res.send({ message: "Error in Fetching user" });
-  }
-});
+// router.get("/me", auth, async (req, res) => {
+//   try {
+//     // request.user is getting fetched from Middleware after token authentication
+//     const user = await User.findById(req.user.id);
+//     res.json(user);
+//   } catch (e) {
+//     res.send({ message: "Error in Fetching user" });
+//   }
+// });
 
 module.exports = router;
