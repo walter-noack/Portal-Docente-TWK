@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const user = require("./routes/user");
+const subject = require("./routes/subject");
+
 const InitiateMongoServer = require("./config/db");
 
 // Initiate Mongo Server
@@ -11,19 +13,16 @@ const app = express();
 // PORT
 const PORT = process.env.PORT || 4000;
 
-// Middleware
-app.use(bodyParser.json());
+
+app.use('/user', require('./routes/user'));
+app.use('/subject', require('./routes/subject'));
 
 app.get("/", (req, res) => {
   res.json({ message: "API Funcionando" });
 });
 
-/**
- * Router Middleware
- * Router - /user/*
- * Method - *
- */
 app.use("/user", user);
+app.use("/subject", subject);
 
 app.listen(PORT, (req, res) => {
   console.log(`Servidor iniciado en puerto ${PORT}`);
