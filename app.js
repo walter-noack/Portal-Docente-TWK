@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const user = require("./routes/user");
 const InitiateMongoServer = require("./config/db");
+const subject = require("./routes/subject");
 
 // Initiate Mongo Server
 InitiateMongoServer();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
  * Method - *
  */
 app.use("/user", user);
+app.use("/subject", subject);
 
 app.listen(PORT, (req, res) => {
   console.log(`Servidor iniciado en puerto ${PORT}`);
