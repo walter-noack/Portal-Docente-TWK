@@ -1,8 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
+// Replace this with your MONGOURI.
+const MONGOURI = "mongodb+srv://adminTWK:adminTWK@cluster0.eqwkvz7.mongodb.net/test";
 
 const connectDB = async () => {
     try {
-        const cn = await mongoose.connect('mongodb+srv://oscarVillanueva:paladinpar123@cluster0.t1w9n.mongodb.net/test', {
+        const cn = await mongoose.connect(MONGOURI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
