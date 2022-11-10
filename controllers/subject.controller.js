@@ -66,7 +66,8 @@ const viewSubject = async (req, res) =>{
   }
   try {
       console.log(req.body);
-      const subject = await Subject.findById(req.subject.rut);
+      // http://localhost:4000/subject/viewSubject
+      const subject = await Subject.find(req.body.teacherCode);
       res.json(subject);
       } catch (e) {
         res.send({ message: "Error in Fetching subject" });
