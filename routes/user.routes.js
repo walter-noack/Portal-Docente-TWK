@@ -20,7 +20,7 @@ router.post(
           min: 6
         })
     ],
-    UserController.singUpUser
+    UserController.signUpUser
   );
 
 router.get(

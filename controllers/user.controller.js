@@ -104,7 +104,7 @@ const confirm = async (req, res) => {
     }
 }
 
-const singUpUser = async (req, res) => {
+const signUpUser = async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
           return res.status(400).json({
@@ -225,7 +225,7 @@ const getUser = async (req, res) => {
 
 module.exports = {
     signUpUserMail,
-    singUpUser,
+    signUpUser,
     confirm,
     login,
     getUser
