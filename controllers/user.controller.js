@@ -183,23 +183,31 @@ const login = async (req, res) => {
       });
 
       
-    console.log(user.firstLogin);
-    if (user.firstLogin == true) console.log("H")
-    // const FirstLogin = user.firstLogin;
-    // if (FirstLogin !== true) {
-    //   return res.status(304).json({
-    //     message: "Change Password",
-    //   });
-    // }
-
     const payload = {
       user: {
         id: user.id,
       },
     };
 
-    // const token = getToken(payload);
-    // console.log(getTokenData(getToken(payload)));
+    // console.log(user.firstLogin);
+    if (user.firstLogin == 'true') {
+      jwt.sign(
+      payload,
+      "randomString",
+      {
+        expiresIn: 3600,
+      },
+      (err, token) => {
+        if (err) throw err;
+        return res.status(200).json({
+          rut,
+          message: "Change Password !",
+        });
+      }
+    )
+      
+    }
+
 
     jwt.sign(
       payload,
@@ -224,6 +232,53 @@ const login = async (req, res) => {
   }
 };
 
+const updatePassword = async (req, res) => {
+  try {
+    // Obtener el user
+    
+    let { rut } = req.body;
+    let user = await User.findOne({
+      rut,
+    });
+    
+    user.firstLogin = req.body.firstLogin;
+    
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(req.body.password, salt);
+
+    await user.save();
+
+    
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      "randomString",
+      {
+        expiresIn: 10000,
+      },
+      (err, token) => {
+        if (err) throw err;
+        res.status(200).json({
+          user,
+          token,
+        });
+      }
+    );
+
+  } catch (error) {
+      console.log(error);
+      return res.json({
+        success: false,
+        msg: "Error al confirmar usuario",
+      });
+    }
+};
+
 const getUser = async (req, res) => {
   try {
     // request.user is getting fetched from Middleware after token authentication
@@ -239,5 +294,6 @@ module.exports = {
   singUpUser,
   confirm,
   login,
+  updatePassword,
   getUser,
 };
