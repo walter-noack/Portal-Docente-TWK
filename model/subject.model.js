@@ -4,7 +4,7 @@ const SubjectSchema = mongoose.Schema({
   name: { type: String, required: true  },
   code: { type: String, required: true,  },
   teacherCode: { type: String, required: true, },
-  Year: { type: String, },
+  year: { type: String, },
   semester: { type: String, },
   jornada: { type: String,  },
 });

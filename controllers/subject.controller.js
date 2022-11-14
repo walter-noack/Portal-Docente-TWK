@@ -12,8 +12,8 @@ const createSubject = async (req, res) => {
 
   const { name, code, teacherCode, year, semester, jornada } = req.body;
   try {
-    let subject = await Subject.find({
-      teacherCode
+    let subject = await Subject.findOne({
+      code
     });
     if (subject) {
       return res.status(400).json({
