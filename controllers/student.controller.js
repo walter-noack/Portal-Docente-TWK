@@ -1,8 +1,11 @@
-const Subject =require("../model/subject.model");
+const Student = require ("../model/student.model");
 const { check, validationResult } = require("express-validator");
-const jwt = require("jsonwebtoken");
+const life_jwt = require("jsonwebtoken");
 
-const createSubject = async (req, res) => {
+
+
+
+const createStudent = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -10,31 +13,29 @@ const createSubject = async (req, res) => {
     });
   }
 
-  const { name, code, teacherCode, year, semester, day } = req.body;
+  const { rut,name, lastname, subjects  } = req.body;
   try {
-    let subject = await Subject.findOne({
-      code
+    let student = await Student.findOne({
+      rut
     });
-    if (subject) {
+    if (student) {
       return res.status(400).json({
-        msg: "Subject Already Exists"
+        msg: "Student Already Exists"
       });
     }
 
-    subject = new Subject({
+    student = new Student({
+      rut,
       name,
-      code,
-      teacherCode,
-      year,
-      semester,
-      day
+      lastname,
+      subjects
     });
 
-    await subject.save();
+    await student.save();
 
     const payload = {
-      subject: {
-        id: subject.id
+      student: {
+        id: student.id
       }
     };
 
@@ -47,7 +48,7 @@ const createSubject = async (req, res) => {
       (err) => {
         if (err) throw err;
         res.status(200).json({
-          message:"Asignatura creada"
+          message:"estudiante creada"
         });
       }
     );
@@ -57,6 +58,11 @@ const createSubject = async (req, res) => {
   }
 }
 
+app.get("createStudents", function (req, res) {
+  Student.find({}, function (err, student) {
+    res.status(200).send(student);
+  });
+});
 module.exports = {
-  createSubject
+  createStudent
 }
