@@ -12,6 +12,7 @@ const createSubject = async (req, res) => {
 
   const { name, code, teacherCode, year, semester, jornada } = req.body;
   try {
+    
     let subject = await Subject.findOne({
       code
     });
@@ -65,9 +66,9 @@ const viewSubject = async (req, res) =>{
     });
   }
   try {
-      console.log(req.body);
       // http://localhost:4000/subject/viewSubject
-      const subject = await Subject.find(req.body.teacherCode);
+      const teacherCode = req.body.rut;
+      const subject = await Subject.find({ teacherCode });
       res.json(subject);
       } catch (e) {
         res.send({ message: "Error in Fetching subject" });
