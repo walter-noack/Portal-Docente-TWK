@@ -11,7 +11,7 @@ const auth = require("../middleware/auth");
  */
 
  router.get(
-  "/viewSubject",
+  "/viewSubject/:rut",
   [],
   SubjectController.viewSubject
 );

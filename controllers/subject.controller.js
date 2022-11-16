@@ -67,7 +67,7 @@ const viewSubject = async (req, res) =>{
   }
   try {
       // http://localhost:4000/subject/viewSubject
-      const teacherCode = req.body.rut;
+      const teacherCode = req.params.rut;
       const subject = await Subject.find({ teacherCode });
       res.json(subject);
       } catch (e) {
