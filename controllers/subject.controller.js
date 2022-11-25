@@ -1,4 +1,4 @@
-const Subject =require("../model/subject.model");
+const Subject = require("../model/subject.model");
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 

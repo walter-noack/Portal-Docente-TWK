@@ -141,8 +141,8 @@ const User = require("../model/user.model");
 //   }
 // );
 
-// /**
-//  * @method - POST
+//  * @me
+// /**thod - POST
 //  * @description - Get LoggedIn User
 //  * @param - /user/me
 //  */

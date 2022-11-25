@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 const user = require("./routes/user.routes");
 const subject = require("./routes/subject.routes");
+const studentModel = require("./model/student.model");
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 
 app.use("/user", user);
 app.use("/subject", subject);
+app.use("student", studentModel)
 
 app.listen(PORT, (req, res) => {
   console.log(`Servidor iniciado en puerto ${PORT}`);

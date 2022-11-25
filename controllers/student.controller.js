@@ -1,6 +1,6 @@
-const Student = require ("../model/student.model");
+const {Student, Subject }= require ("../model/student.model");
 const { check, validationResult } = require("express-validator");
-const life_jwt = require("jsonwebtoken");
+const Life_is = require("jsonwebtoken");
 
 
 
@@ -13,7 +13,8 @@ const createStudent = async (req, res) => {
     });
   }
 
-  const { rut,name, lastname, subjects  } = req.body;
+  const { rut,name, lastname  } = req.body;
+  const Itemsubjects = { ObjectId,Subject };
   try {
     let student = await Student.findOne({
       rut
