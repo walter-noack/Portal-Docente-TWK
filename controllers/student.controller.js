@@ -1,69 +1,69 @@
-const {Student, Subject }= require ("../model/student.model");
+const Student = require("../model/student.model");
 const { check, validationResult } = require("express-validator");
-const Life_is = require("jsonwebtoken");
-
-
-
+// const Life_is = require("jsonwebtoken");
 
 const createStudent = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array()
-    });
-  }
+  
+  let student = new Student(req.body);
+  console.log(student);
 
-  const { rut,name, lastname  } = req.body;
-  const Itemsubjects = { ObjectId,Subject };
-  try {
-    let student = await Student.findOne({
-      rut
-    });
-    if (student) {
-      return res.status(400).json({
-        msg: "Student Already Exists"
+  student.save().
+  then(() => {
+      res.status(201).json({
+        ok: true,
+        student,
       });
-    }
-
-    student = new Student({
-      rut,
-      name,
-      lastname,
-      subjects
+    })
+    .catch(() => {
+      res.status(500).json({
+        ok: false,
+        msg: "Create student failed",
+      });
     });
 
-    await student.save();
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json({
+  //     errors: errors.array()
+  //   });
+  // }
 
-    const payload = {
-      student: {
-        id: student.id
-      }
-    };
+  // const { rut, name, lastname } = req.body;
+  // // const Itemsubjects = { ObjectId,Subject };
+  // try {
+  //   let student = await Student.findOne({
+  //     rut,
+  //   });
+  //   if (student) {
+  //     return res.status(400).json({
+  //       msg: "Student Already Exists",
+  //     });
+  //   }
 
-    jwt.sign(
-      payload,
-      "randomString",
-      {
-        expiresIn: 10000
-      },
-      (err) => {
-        if (err) throw err;
-        res.status(200).json({
-          message:"estudiante creada"
-        });
-      }
-    );
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send("Error in Saving");
-  }
-}
+  //   student = new Student({
+  //     rut,
+  //     name,
+  //     lastname,
+  //     // subjects
+  //   });
 
-app.get("createStudents", function (req, res) {
-  Student.find({}, function (err, student) {
-    res.status(200).send(student);
-  });
-});
+  //   await student.save();
+    // res.status(200).json({
+    //   message: "estudiante creada"
+    // });
+  // } catch (err) {
+  //   console.log(err.message);
+  //   res.status(500).send("Error in Saving");
+  // }
+  
+};
+
+// app.get("createStudents", function (req, res) {
+//   Student.find({}, function (err, student) {
+//     res.status(200).send(student);
+//   });
+// });
+
 module.exports = {
-  createStudent
-}
+  createStudent,
+};

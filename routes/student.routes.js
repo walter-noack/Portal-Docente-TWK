@@ -13,12 +13,12 @@ const auth = require("../middleware/auth");
  router.post(
     "/createstudent",
     [
-      check("rut", "Please enter a valid rut")
-        .not()
-        .isEmpty(),
-      check("name", "Please enter a valid name"),
-      check("lastname", "Please enter a valid lastname"),
-      check("subject", "Please Enter a Valid subject"),
+      // check("rut", "Please enter a valid rut")
+      //   .not()
+      //   .isEmpty(),
+      // check("name", "Please enter a valid name"),
+      // check("lastname", "Please enter a valid lastname"),
+      // check("subject", "Please Enter a Valid subject"),
     ],
     StudentController.createStudent
 
