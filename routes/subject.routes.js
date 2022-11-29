@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { check, validationResult } = require("express-validator");
+const { check } = require("express-validator");
 
 const SubjectController = require('../controllers/subject.controller');
 const auth = require("../middleware/auth");
@@ -9,6 +9,12 @@ const auth = require("../middleware/auth");
  * @param - /createsubject
  * @description - Subject SignUp
  */
+
+ router.get(
+  "/viewSubject/:rut",
+  [],
+  SubjectController.viewSubject
+);
 
  router.post(
     "/createsubject",

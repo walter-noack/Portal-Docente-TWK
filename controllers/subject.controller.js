@@ -1,5 +1,5 @@
-const Subject = require("../model/subject.model");
-const { check, validationResult } = require("express-validator");
+const Subject =require("../model/subject.model");
+const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
 const createSubject = async (req, res) => {
@@ -12,6 +12,7 @@ const createSubject = async (req, res) => {
 
   const { name, code, teacherCode, year, semester, day } = req.body;
   try {
+    
     let subject = await Subject.findOne({
       code
     });
@@ -57,6 +58,24 @@ const createSubject = async (req, res) => {
   }
 }
 
+const viewSubject = async (req, res) =>{
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array()
+    });
+  }
+  try {
+      // http://localhost:4000/subject/viewSubject
+      const teacherCode = req.params.rut;
+      const subject = await Subject.find({ teacherCode });
+      res.json(subject);
+      } catch (e) {
+        res.send({ message: "Error in Fetching subject" });
+      }
+  }
+
 module.exports = {
-  createSubject
+  createSubject,
+  viewSubject
 }

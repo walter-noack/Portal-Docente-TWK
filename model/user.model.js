@@ -5,7 +5,10 @@ const UserSchema = mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   name:{ type: String,  },
-  lastname:{ type: String, }
+  lastname:{ type: String, },
+  firstLogin:{ type:String, 
+    default:true
+  }
 });
 
 // export model user with UserSchema
