@@ -4,11 +4,13 @@ const bodyParser = require("body-parser");
 const cors = require('cors');
 const user = require("./routes/user.routes");
 const subject = require("./routes/subject.routes");
-const student = require("./model/student.model");
+const student = require("./routes/student.routes");
 
 const app = express();
 app.use(cors());
 connectDB();
+
+
 
 // PORT
 const PORT = process.env.PORT || 4000;
@@ -17,9 +19,9 @@ const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.json({ message: "API Funcionando" });
-});
+app.use("/user", user);
+app.use("/subject", subject);
+app.use("/student", student);
 
 /**
  * Router Middleware
@@ -27,9 +29,6 @@ app.get("/", (req, res) => {
  * Method - *
  */
 
-app.use("/user", user);
-app.use("/subject", subject);
-app.use("/student", student);
 
 app.listen(PORT, (req, res) => {
   console.log(`Servidor iniciado en puerto ${PORT}`);
