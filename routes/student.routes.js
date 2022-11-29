@@ -1,5 +1,5 @@
-const router = require('express').Router();
-const { check, validationResult } = require("express-validator");
+const router = require("express").Router();
+// const { check, validationResult } = require("express-validator");
 
 const StudentController = require('../controllers/student.controller');
 const auth = require("../middleware/auth");
@@ -23,3 +23,5 @@ const auth = require("../middleware/auth");
     StudentController.createStudent
 
   );
+
+  module.exports = router;
