@@ -4,10 +4,13 @@ const StudentsSchema = mongoose.Schema({
     rut: { type: String, required: true  },
     name: { type: String, required: true  },
     lastname: { type: String, required: true },
-    // subjects: [{type: String}]
-    // subject: [{type:Schema.SubjectId,refs:"Subject"}],
-    // ingredientes: [{type: Schema.Types.ObjectId, ref: 
-      // 'IngredientesSchema'}],
+    subjects: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        refs: "Subject",
+        autopopulate: true
+      },
+    ],
   });
   
   // export model user with StudentsSchema
