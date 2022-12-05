@@ -1,25 +1,22 @@
 const Qualification = require("../model/qualif.model");
 const { check, validationResult } = require("express-validator");
 
-const createQualif = async (req, res) => {
+const createQualification = async (req, res) => {
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({
+    //     errors: errors.array()
+    //   });
+    // }
 
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array()
-      });
-    }
-  
-
-    const { studentCode, subjectstudent } = req.body;
-    const qualification = req.body.qualification;
-    console.log(qualification)
+    const { studentCode, subjectCode } = req.body;
+    const qualifications = req.body.qualifications;
+    console.log(qualifications)
     try {
       let qualification = await Qualification.findOne({
-        studentCode,
+        studentCode, subjectCode
       });
-      if (student) {
+      if (qualification) {
         return res.status(400).json({
           msg: "Qualification already exists",
         });
@@ -27,13 +24,13 @@ const createQualif = async (req, res) => {
   
       qualification = new Qualification({
         studentCode,
-        subjectstudent,
-        qualification
+        subjectCode,
+        qualifications
       });
   
-      await student.save();
+      await qualification.save();
       res.status(200).json({
-        message: "Calificación Creada"
+        message: "Calificaciones Creadas"
       });
     } catch (err) {
       console.log(err.message);

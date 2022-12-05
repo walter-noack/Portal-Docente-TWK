@@ -5,6 +5,7 @@ const cors = require('cors');
 const user = require("./routes/user.routes");
 const subject = require("./routes/subject.routes");
 const student = require("./routes/student.routes");
+const qualif = require("./routes/qualif.routes");
 
 const app = express();
 app.use(cors());
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/user", user);
 app.use("/subject", subject);
 app.use("/student", student);
+app.use("/qualification", qualif);
 
 /**
  * Router Middleware

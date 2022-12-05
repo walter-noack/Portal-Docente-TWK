@@ -21,7 +21,6 @@ const auth = require("../middleware/auth");
       check("subject", "Please Enter a Valid subject"),
     ],
     StudentController.createStudent
-
   );
 
   router.get(

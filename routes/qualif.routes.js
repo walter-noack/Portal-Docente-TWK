@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { check, validationResult } = require("express-validator");
 
-const QualifController = require('../controllers/student.controller');
+const QualifController = require('../controllers/qualif.controller');
 const auth = require("../middleware/auth");
 
 /**
@@ -11,16 +11,15 @@ const auth = require("../middleware/auth");
  */
 
  router.post(
-    "/createqualif",
+  "/createqualif",
     [
-      check("studentCode", "Please enter a valid rut")
-        .not()
-        .isEmpty(),
-      check("subjectstudents", "Please enter a valid code"),
-      check("qualification", "Please enter a valid qualification"),
-      
+      // check("studentCode", "Please enter a valid rut")
+      //   .not()
+      //   .isEmpty(),
+      // check("subjectCode", "Please enter a valid code"),
+      // check("qualifications", "Please enter a valid qualification"),
     ],
-    QualifController.createQualif
+    QualifController.createQualification
   );
 
   module.exports = router;
