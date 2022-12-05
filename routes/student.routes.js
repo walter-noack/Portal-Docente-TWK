@@ -24,4 +24,16 @@ const auth = require("../middleware/auth");
 
   );
 
+  router.get(
+    "/",
+    [],
+    StudentController.getStudents
+  );
+
+  router.get(
+    "/studentBySubject/:id",
+    [],
+    StudentController.getStudentBySubject
+  );
+
   module.exports = router;
