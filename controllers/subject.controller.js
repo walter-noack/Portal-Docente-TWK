@@ -1,4 +1,5 @@
 const Subject =require("../model/subject.model");
+const subjectsStudent =require("../model/subjects-student.model");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
@@ -21,6 +22,14 @@ const createSubject = async (req, res) => {
         msg: "Subject Already Exists"
       });
     }
+    let subjectsShort = await subjectsStudent.findOne({
+      code
+    });
+    if (subjectsShort) {
+      return res.status(400).json({
+        msg: "Subject-Student Already Exists"
+      });
+    }
 
     subject = new Subject({
       name,
@@ -30,8 +39,13 @@ const createSubject = async (req, res) => {
       semester,
       jornada
     });
+    subjectShort = new subjectsStudent({
+      name,
+      code
+    });
 
     await subject.save();
+    await subjectShort.save();
 
     const payload = {
       subject: {
