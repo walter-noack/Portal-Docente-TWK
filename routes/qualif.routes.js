@@ -12,14 +12,14 @@ const auth = require("../middleware/auth");
 
  router.post(
   "/createqualif",
-    [
-      // check("studentCode", "Please enter a valid rut")
-      //   .not()
-      //   .isEmpty(),
-      // check("subjectCode", "Please enter a valid code"),
-      // check("qualifications", "Please enter a valid qualification"),
-    ],
+    [ ],
     QualifController.createQualification
   );
 
+
+  router.get(
+    "/",
+    [ ],
+    QualifController.getQualification
+  )
   module.exports = router;

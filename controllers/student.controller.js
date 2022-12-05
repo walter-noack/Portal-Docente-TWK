@@ -13,6 +13,8 @@ const createStudent = async (req, res) => {
 
   // console.log(req.body)
   const { rut, name, lastname } = req.body;
+
+  
   const subjects = req.body.subjects;
   try {
     let student = await Student.findOne({
