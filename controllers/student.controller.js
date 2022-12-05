@@ -62,47 +62,29 @@ const getStudents = async (req, res) => {
 };
 
 const getStudentBySubject = async (req, res) => {
-  console.log(req.params);
+  // console.log(req.params);
   try {
     let _id = req.params.id;
     const subject = await Subject.find({
       _id,
     });
-    let subjectListStudent = await Student.find({ subjects: subject._id }).
-    populate('student').
-    exec(function (err, student) {
-      if (err) return handleError(err);
-      console.log( student.subjects.name);
-      // prints "The author is Ian Fleming"
-    });
 
-  //   Subject.findOne({code:"ARQ-03"}).exec(function(err,stu){
-  //     subject.student=stu._id;
-  //     subject.save();
-  //     studentModel.updateOne({_id:stu._id},{$push:{subject:subject._id}}).exec();
-  // })
+    let students = await Student.find({});
 
-    // Student.find({
-    //   subjects: {
-    //     $elemMatch: student.subject[i].id,
-    //   },
-    // });
-
-    // let studentsSubject = [];
-    // students.forEach((student) => {
-    //   console.log(student.subjects);
-    //   let subjectsStudent =student.subjects;
-    //   subjectsStudent.forEach((subjectID) => {
-    //     if(subjectID = _id) {
-    //       studentsSubject.push(student);
-    //     }
-    //   });
-    // });
-
+    const response = [];
+    students.forEach((data)=>{
+      // console.log(data)
+      data.subjects.map((sub)=> {
+        if(sub == _id)
+        response.push(data._id)
+      })
+    })
+    console.log("=======")
+    console.log(response)
+    console.log("=======")
     res.status(200).json({
-      message: `Encontrados estudiantes de la asignatura ${subject.code} `,      
-      subject,
-      students,
+      message: `Encontrados estudiantes de la asignatura ${subject.name} `,      
+      response
       // studentsSubject,
     });
   } catch (err) {
