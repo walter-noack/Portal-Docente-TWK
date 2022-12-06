@@ -58,8 +58,42 @@ const getQualification = async (req, res) => {
 };
 
 
+//**REVISAR**//
+const getQualifBySubject = async (req, res) => {
+  // console.log(req.params);
+  try {
+    let _id = req.params.id;
+    const subject = await Subject.find({
+      _id,
+    });
+
+    let qualification= await Qualification.find({});
+
+    const response = [];
+    qualification.forEach((data)=>{
+      // console.log(data)
+      data.subjects.map((sub)=> {
+        if(sub == _id)
+        response.push(data._id)
+      })
+    })
+    console.log("=======")
+    console.log(response)
+    console.log("=======")
+    res.status(200).json({
+      message: `Encontradas las calificaciones de la asignatura`,      
+      response
+      // studentsSubject,
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Error in Get");
+  }
+};
+
 
 module.exports = {
   createQualification,
-  getQualification
+  getQualification,
+  getQualifBySubject
 };

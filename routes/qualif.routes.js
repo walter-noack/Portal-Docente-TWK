@@ -21,5 +21,12 @@ const auth = require("../middleware/auth");
     "/",
     [ ],
     QualifController.getQualification
-  )
+  );
+
+  router.get(
+    "/qualifBySubject/:subjectCode",
+    [],
+    QualifController.getQualifBySubject
+  );
+
   module.exports = router;
