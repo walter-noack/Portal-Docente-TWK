@@ -1,4 +1,5 @@
 const Qualification = require("../model/qualif.model");
+const Subject = require("../model/subject.model");
 const { check, validationResult } = require("express-validator");
 
 const createQualification = async (req, res) => {
@@ -62,21 +63,21 @@ const getQualification = async (req, res) => {
 const getQualifBySubject = async (req, res) => {
   // console.log(req.params);
   try {
-    let _id = req.params.id;
+    let code = req.params.subjectCode;
     const subject = await Subject.find({
-      _id,
+      code,
     });
-
+    console.log(subject);
     let qualification= await Qualification.find({});
-
+    console.log(qualification);
     const response = [];
     qualification.forEach((data)=>{
-      // console.log(data)
-      data.subjects.map((sub)=> {
-        if(sub == _id)
+      console.log(data)
+      // data.subjectCode.map((sub)=> {
+        if(data.subjectCode == code)
         response.push(data._id)
       })
-    })
+  
     console.log("=======")
     console.log(response)
     console.log("=======")
