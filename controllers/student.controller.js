@@ -64,6 +64,10 @@ const getStudents = async (req, res) => {
 const getStudentBySubject = async (req, res) => {
   // console.log(req.params);
   try {
+    
+    const code = req.params.code;
+    const subject1 = await Subject.find({ code });
+    console.log(subject1)
     let _id = req.params.id;
     const subject = await Subject.find({
       _id,
@@ -79,7 +83,7 @@ const getStudentBySubject = async (req, res) => {
         response.push(data._id)
       })
     })
-    console.log("=======")
+    console.log("Estudiantes encontrados")
     console.log(response)
     console.log("=======")
     res.status(200).json({

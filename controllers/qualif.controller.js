@@ -1,5 +1,6 @@
 const Qualification = require("../model/qualif.model");
 const Subject = require("../model/subject.model");
+const Student = require("../model/student.model");
 const { check, validationResult } = require("express-validator");
 
 const createQualification = async (req, res) => {
@@ -63,28 +64,28 @@ const getQualification = async (req, res) => {
 const getQualifBySubject = async (req, res) => {
   // console.log(req.params);
   try {
-    let code = req.params.subjectCode;
-    const subject = await Subject.find({
-      code,
-    });
-    console.log(subject);
-    let qualification= await Qualification.find({});
-    console.log(qualification);
-    const response = [];
-    qualification.forEach((data)=>{
-      console.log(data)
-      // data.subjectCode.map((sub)=> {
-        if(data.subjectCode == code)
-        response.push(data._id)
-      })
+    let subjectCode = req.params.subjectCode;
+    // const subject = await Subject.find({
+    //   code,
+    // });
+    // console.log(subject);
+    let qualification= await Qualification.find({ subjectCode });
+    // console.log(qualification);
+    // const response = [];
+    // qualification.forEach((data)=>{
+    //   console.log(data)
+    //   // data.subjectCode.map((sub)=> {
+    //     if(data.subjectCode == code)
+    //     response.push(data._id)
+    //   })
   
-    console.log("=======")
-    console.log(response)
-    console.log("=======")
+    // console.log("=======")
+    // console.log(response)
+    // console.log("=======")
     res.status(200).json({
       message: `Encontradas las calificaciones de la asignatura`,      
-      response
-      // studentsSubject,
+      // response,
+      qualification
     });
   } catch (err) {
     console.log(err.message);
@@ -92,9 +93,25 @@ const getQualifBySubject = async (req, res) => {
   }
 };
 
+const getQualifByStudent = async (req, res) => {
+    
+  try {
+    let studentCode = req.params.studentCode;
+    let qualification= await Qualification.find({ studentCode });
+    res.status(200).json({
+      message: `Encontradas las calificaciones del estudiante`, 
+      qualification
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Error in Get");
+  }
+  }
+
 
 module.exports = {
   createQualification,
   getQualification,
-  getQualifBySubject
+  getQualifBySubject,
+  getQualifByStudent
 };

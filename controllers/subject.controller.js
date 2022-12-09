@@ -72,7 +72,7 @@ const createSubject = async (req, res) => {
   }
 }
 
-const viewSubject = async (req, res) =>{
+const viewSubjectByTeacher = async (req, res) =>{
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({
@@ -89,7 +89,25 @@ const viewSubject = async (req, res) =>{
       }
   }
 
+  const viewSubjectByCode = async (req, res) => {
+    
+  try {
+    // http://localhost:4000/subject/viewSubject
+    const code = req.params.code;
+    const subject = await Subject.find({ 'code': code });
+    
+    res.status(200).json({
+      message: `Encontrada la asignatura ${subject.name} `,      
+      subject
+      // studentsSubject,
+    });
+    } catch (e) {
+      res.send({ message: "Error in Fetching subject" });
+    }
+  }
+
 module.exports = {
   createSubject,
-  viewSubject
+  viewSubjectByTeacher,
+  viewSubjectByCode
 }
