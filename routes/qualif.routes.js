@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { check, validationResult } = require("express-validator");
+const { check } = require("express-validator");
 
 const QualifController = require('../controllers/qualif.controller');
 const auth = require("../middleware/auth");

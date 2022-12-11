@@ -1,5 +1,4 @@
 const Subject =require("../model/subject.model");
-const subjectsStudent =require("../model/subjects-student.model");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 

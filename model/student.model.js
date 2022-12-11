@@ -13,6 +13,5 @@ const StudentsSchema = mongoose.Schema({
   ],
 });
 
-// StudentsSchema.plugin(require("mongoose-autopopulate"));
 // export model user with StudentsSchema
 module.exports = mongoose.model("student", StudentsSchema);

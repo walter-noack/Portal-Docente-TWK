@@ -80,12 +80,12 @@ const getStudentBySubject = async (req, res) => {
       // console.log(data)
       data.subjects.map((sub)=> {
         if(sub == _id)
-        response.push(data._id)
+        response.push(data)
       })
     })
-    console.log("Estudiantes encontrados")
-    console.log(response)
-    console.log("=======")
+    // console.log("Estudiantes encontrados")
+    // console.log(response)
+    // console.log("=======")
     res.status(200).json({
       message: `Encontrados estudiantes de la asignatura ${subject.name} `,      
       response
