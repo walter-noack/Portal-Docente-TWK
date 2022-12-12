@@ -14,10 +14,11 @@ const createQualification = async (req, res) => {
   const { studentCode, subjectCode } = req.body;
 
   const qualifications = req.body.qualifications;
-  console.log(qualifications)
+  console.log(qualifications);
   try {
     let qualification = await Qualification.findOne({
-      studentCode, subjectCode
+      studentCode,
+      subjectCode,
     });
     if (qualification) {
       return res.status(400).json({
@@ -28,20 +29,18 @@ const createQualification = async (req, res) => {
     qualification = new Qualification({
       studentCode,
       subjectCode,
-      qualifications
+      qualifications,
     });
 
     await qualification.save();
     res.status(200).json({
-      message: "Calificaciones Creadas"
+      message: "Calificaciones Creadas",
     });
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Error in Saving");
   }
-
 };
-
 
 const getQualification = async (req, res) => {
   Qualification.find({}, "studentCode subjectCode qualifications")
@@ -59,7 +58,6 @@ const getQualification = async (req, res) => {
     });
 };
 
-
 //**REVISAR**//
 const getQualifBySubject = async (req, res) => {
   // console.log(req.params);
@@ -69,7 +67,7 @@ const getQualifBySubject = async (req, res) => {
     //   code,
     // });
     // console.log(subject);
-    let qualification= await Qualification.find({ subjectCode });
+    let qualification = await Qualification.find({ subjectCode });
     // console.log(qualification);
     // const response = [];
     // qualification.forEach((data)=>{
@@ -78,14 +76,14 @@ const getQualifBySubject = async (req, res) => {
     //     if(data.subjectCode == code)
     //     response.push(data._id)
     //   })
-  
+
     // console.log("=======")
     // console.log(response)
     // console.log("=======")
     res.status(200).json({
-      message: `Encontradas las calificaciones de la asignatura`,      
+      message: `Encontradas las calificaciones de la asignatura`,
       // response,
-      qualification
+      qualification,
     });
   } catch (err) {
     console.log(err.message);
@@ -94,24 +92,40 @@ const getQualifBySubject = async (req, res) => {
 };
 
 const getQualifByStudent = async (req, res) => {
-    
   try {
     let studentCode = req.params.studentCode;
-    let qualification= await Qualification.find({ studentCode });
+    let qualification = await Qualification.find({ studentCode });
     res.status(200).json({
-      message: `Encontradas las calificaciones del estudiante`, 
-      qualification
+      message: `Encontradas las calificaciones del estudiante`,
+      qualification,
     });
   } catch (err) {
     console.log(err.message);
     res.status(500).send("Error in Get");
   }
-  }
+};
 
+const updateQualif = (req, res) => {
+  // console.log(req.body);
+  let qualif = req.body;
+  Qualification.findByIdAndUpdate({ _id: req.body._id }, qualif, { new: true })
+    .then((result) => {
+      res.status(200).json({
+        message: "QualificationSubject updated",
+        QualifDB: result,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
+};
 
 module.exports = {
   createQualification,
   getQualification,
   getQualifBySubject,
-  getQualifByStudent
+  getQualifByStudent,
+  updateQualif
 };

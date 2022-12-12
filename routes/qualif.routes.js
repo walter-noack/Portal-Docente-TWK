@@ -35,4 +35,11 @@ const auth = require("../middleware/auth");
     QualifController.getQualifByStudent
   );
 
+
+  router.put(
+    "/updateQualif",
+    [],
+    QualifController.updateQualif
+  );
+
   module.exports = router;
